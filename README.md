@@ -1,6 +1,6 @@
 Final Project
 ======
-Collaborators: David Liang
+Members: David Liang
 
 Description:
 ------
@@ -8,4 +8,4 @@ Description:
 
 Timeline:
 ------
-5/6 Account signup and login added
+5/6 Add account signup and login
