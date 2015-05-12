@@ -3,3 +3,6 @@
 
 #md
 *.md~
+
+#html
+*.html~
