@@ -3,14 +3,12 @@
   <head>
     <title>Signup Page</title>
     <link rel="stylesheet" href="../static/bootstrap.min.css">
+    <link rel="stylesheet" href="../static/style.css">
     <style>
       .form-signin input[type="password"] {
       margin-bottom: 10px;
       border-top-left-radius: 0;
       border-top-right-radius: 0;
-      }
-      body{
-      background-image: url("static/leaf_pattern.png");
       }
     </style>
   </head>
@@ -28,11 +26,11 @@
 	{% endfor %}
 	{% endif %}
 	{% endwith %}
-	<input type="text" class="form-control" name="username" placeholder = "Username" autofocus>
+	<input type="username" class="form-control" name="username" placeholder = "Username" autofocus>
 	<br>
 	<input type="password" class="form-control" name="password" placeholder = "Password">
 	<br>
-	<input type="text" class="form-control" name="emailaddress" placeholder = "Email Address">
+	<input type="text" class="form-control" name="email" placeholder = "Email Address">
 	<br>
 	Gender:
 	<select id="genders" class="form-control" name="gender">
@@ -42,7 +40,7 @@
 	<br>
 	Age:
 	<select id="ages" class="form-control" name="age">
-	  {% for ages in a %}
+	  {% for ages in age %}
 	  <option value={{ages}}> {{ages}} </option>
 	  {% endfor %}
 	</select>
