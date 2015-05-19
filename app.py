@@ -13,34 +13,46 @@ app.secret_key = os.urandom(24)
 def login():
     error = None
     if request.method == "POST":
-        username = request.form["username"]
-        password = request.form["password"]
-        if(database.validateUser(username,password) == False):
-            error = "Invalid username or password."
-            return redirect(url_for('login'))
-        flash("You've logged in successfully.")
-        session['username'] = request.form['username']
-        return redirect(url_for('posts'))
+        button = request.form["b"]
+        if button == "Register":
+            return redirect(url_for('register'))
+        else:
+            username = request.form["username"]
+            password = request.form["password"]
+            #Login unsuccessful
+            if(database.validateUser(username,password) == False):
+                error = "Invalid username or password."
+                return redirect(url_for('login'))
+            #Login successful
+            flash("Login successful.")
+            session['username'] = request.form['username']
+            return redirect(url_for('posts'))
     return render_template("login.html")
 
 @app.route('/register', methods=["GET","POST"])
 def register():
     error = None
     if request.method == "POST":
+        button = request.form["b"]
         if button == "Login":
             return redirect(url_for('login'))
-        username = request.form["username"]
-        password = request.form["password"]
-        email = request.form["email"]
-        if not database.addUser(username,password):
-            flash("Invalid username or password.")
-            return redirect(url_for('signup'))
-        flash("Great! You've registered! Now you can log in.")
-        return redirect(url_for('login'))
-    age = []
-    for x in range(12, 66):
-        age += [x]
-    return render_template("register.html", age = age)
+        else:
+            button = request.form["b"]
+            username = request.form["username"]
+            password = request.form["password"]
+            email = request.form["email"]
+            #Register unsuccessful
+            if not database.addUser(username,password):
+                flash("Invalid username or password.")
+                return redirect(url_for('signup'))
+            #Register successful
+            flash("Great! You've registered! Now you can log in.")
+            return redirect(url_for('login'))
+    else:
+        age = []
+        for x in range(12, 66):
+            age += [x]
+        return render_template("register.html", age = age)
 
 @app.route('/posts',methods=["GET","POST"])
 def posts():
@@ -52,6 +64,13 @@ def posts():
         username = "Anonymous"
     return render_template("public.html", posts = posts, username = username)
 
+@app.route("/user/<username>",methods=["GET","POST"])
+def user(username):
+    if request.method=="GET":
+        return render_template("user.html", username = username)
+    else:
+        return render_template("user.html", username = username)
+
 @app.route('/posts/submit',methods=["GET","POST"])
 def submit():
     if 'username' in session:
@@ -59,8 +78,9 @@ def submit():
             database.addPost(session['username'],request.form["post"])   
             return redirect(url_for(request.form["type"])) 
         return render_template("submit.html") 
-    flash("You are not logged in")
-    return redirect(url_for('login'))
+    else:
+        flash("You are not logged in")
+        return redirect(url_for('login'))
 
 @app.route('/logout')
 def logout():
@@ -72,3 +92,4 @@ def logout():
 if __name__ == '__main__':
     app.debug = True
     app.run()
+
