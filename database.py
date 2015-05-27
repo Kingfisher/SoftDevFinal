@@ -13,16 +13,24 @@ def checkPassword(passwordToCheck):
 def checkUsername(usernameToCheck):
     return ((len(usernameToCheck) > 0) and (users.find({"username":usernameToCheck}).count() == 0))
 
+def checkEmail(email):
+    if (len(email) > 6):
+        if (email.find('@') == 1):
+            if (email.find('.') == 1):
+                return True
+    return False
+
 #checks if length of post is greater than 0
 def checkPost(postToCheck):
     return len(postToCheck) > 0
 
 #adds a user to users if username and password are valid
-def addUser(username, password):
+def addUser(username, password, email):
     if ((not checkUsername(username)) or (not checkPassword(password))):
+        #if (not checkEmail(email)):
         return False
     else:
-        newUser = {"username": username,"password": hashlib.sha512(password).hexdigest()}
+        newUser = {"username": username,"password": hashlib.sha512(password).hexdigest(), "email" : email}
         users.insert(newUser)
         return True
 
@@ -34,12 +42,19 @@ def validateUser(username, password):
         return record[0]['password'] == hashlib.sha512(password).hexdigest()
 
 
-def addPost(username, post):
-    if ((checkPost(post) == False) or (users.find({"username":username}).count()<1)):
+def addPost(username, post, privacy):
+    if ((checkPost(post) == False) or (users.find({"username":username}).count() < 1)):
         return False
     else:
-        newPost = {"username": username,"post": post}
+        newPost = {"username": username,"post": post, "privacy" : privacy}
         posts.insert(newPost)
+        return True
+
+def removePost(id):
+    if(posts.find({"id":id}).count() < 1):
+        return False
+    else:
+        posts.remove(posts.find_one({"id":id}))
         return True
         
 def addPublicPost(username, post):
