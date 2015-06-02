@@ -9,6 +9,47 @@
     <!-- To push the page content below the navbar -->
     <style>
       body{ padding-top: 65px; }
+      {% if username != False %}
+
+      .navbar-default .navbar-nav > li > a:hover, .navbar-default .navbar-nav > li > a:focus {
+      color: #000;  /*Sets the text hover color on navbar*/
+      }
+
+      .navbar-default .navbar-nav > .active > a, .navbar-default .navbar-nav > .active >   
+      a:hover, .navbar-default .navbar-nav > .active > a:focus {
+      color: white; /*BACKGROUND color for active*/
+      background-color: green;
+      }
+
+      .navbar-default {
+      background-color: #99CCFF;
+      border-color: green;
+      }
+
+      .dropdown-menu > li > a:hover,
+      .dropdown-menu > li > a:focus {
+      color: #262626;
+      text-decoration: none;
+      background-color: #66CCFF;  /*change color of links in drop down here*/
+      }
+
+      .nav > li > a:hover,
+      .nav > li > a:focus {
+      text-decoration: none;
+      background-color: silver; /*Change rollover cell color here*/
+      }
+
+
+      .navbar-default .navbar-nav > li > a {
+      color: white; /*Change active text color here*/
+      }
+      {% endif %}
+      .myclass {
+      position: absolute;
+      left: 30%;
+      top: 50%;
+      }
+      }
     </style>
 
   </head>
@@ -23,24 +64,34 @@
 	    <span class="icon-bar"></span>
 	  </button>
 	  <!-- Navbar Logo -->
-	  <a class="navbar-brand" href="#"><img style="max-width:100px; margin-top:-7px;" src="../static/patterns/placeholder.png" alt="logo"></a>
+	  <a class="navbar-brand" href=""><img style="max-width:100px; margin-top:-7px;" src="../static/patterns/placeholder.png" alt="logo"></a>
 	</div>
         <div id="navbar" class="navbar-collapse collapse">
 	  <ul class="nav navbar-nav">
             <li class="active">
 	      <a href="{{ url_for('submit') }}">Submit a Post</a>
 	    </li>
+	    <li>
+	      {% if username == 'a' %}
+	      <center>
+	      <form method="POST">
+		<button class="btn btn-lg btn-danger btn-block" type="submit" name="b" value="Delete">Remove all Posts</button>
+	      </form>
+	      </center>
+	      {% else %}
+	      {% endif %}
+	    </li>
 	  </ul>
           <ul class="nav navbar-nav navbar-right">
             {% if not username %}
-	    <li><a href="{{ url_for('login') }}">Log in</a></li>
-	    <li> <a href="#"> You are Anonymous </a></li>
+	    <li class="active"><a href="{{ url_for('login') }}">Log in</a></li>
+	    <li> <a href=""> You are Anonymous </a></li>
 	    {% else %}
 	    <li class="active">
 	      <a href="{{ url_for('logout') }}">Log out</a>
 	    </li>
-	    <li><a href="#">
-		<font color="green"> Logged in as {{ username[0] }} 
+	    <li><a href="">
+		<font color="green"> Logged in as {{ username[0] }} </font>
 	    </a></li>
 	    {% endif %}
           </ul>
@@ -48,16 +99,30 @@
       </div>
     </nav>
     <div class="container">
+      {% if posts|length == 0 %}
+      <center>
+	<b>
+	  <div class="myclass">
+	    <font size="5">
+	      There are no posts! Be the first to submit one!
+	    </font>
+	  </div>
+	</b>
+      </center>
+      {% else %}
       <div class="table-responsive">
 	<table class="table table-hover table-striped table-bordered">
 	  <tbody>
 	    {% for post in posts %}
 	    <tr>
-	    <td>{{post[0]}}</td>
-	    <td>({{post[2]}}) {{post[1]}}</td>
+	      <td>{{post[0]}}</td>
+	      <td>({{post[2]}}) {{post[1]}}</td>
 	    </tr>
 	    {% endfor %}
 	  </tbody>
+	</table>
+      </div>
+      {% endif %}
     </div>
   </body>
 </html>

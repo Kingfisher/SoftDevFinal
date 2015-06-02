@@ -9,6 +9,39 @@
     <!-- To push the page content below the navbar -->
     <style>
       body{ padding-top: 65px; }
+
+      .navbar-default .navbar-nav > li > a:hover, .navbar-default .navbar-nav > li > a:focus {
+      color: #000;  /*Sets the text hover color on navbar*/
+      }
+
+      .navbar-default .navbar-nav > .active > a, .navbar-default .navbar-nav > .active >   
+      a:hover, .navbar-default .navbar-nav > .active > a:focus {
+      color: white; /*BACKGROUND color for active*/
+      background-color: green;
+      }
+
+      .navbar-default {
+      background-color: #99CCFF;
+      border-color: green;
+      }
+
+      .dropdown-menu > li > a:hover,
+      .dropdown-menu > li > a:focus {
+      color: #262626;
+      text-decoration: none;
+      background-color: #66CCFF;  /*change color of links in drop down here*/
+      }
+
+      .nav > li > a:hover,
+      .nav > li > a:focus {
+      text-decoration: none;
+      background-color: silver; /*Change rollover cell color here*/
+      }
+
+
+      .navbar-default .navbar-nav > li > a {
+      color: white; /*Change active text color here*/
+      }
     </style>
 
   </head>
@@ -23,7 +56,7 @@
 	    <span class="icon-bar"></span>
 	  </button>
 	  <!-- Navbar Logo -->
-	  <a class="navbar-brand" href="#"><img style="max-width:100px; margin-top:-7px;" src="../static/patterns/placeholder.png" alt="logo"></a>
+	  <a class="navbar-brand" href="../posts"><img style="max-width:100px; margin-top:-7px;" src="../static/patterns/placeholder.png" alt="logo"></a>
 	</div>
         <div id="navbar" class="navbar-collapse collapse">
 	  <ul class="nav navbar-nav">
@@ -37,7 +70,17 @@
       </div>
     </nav>
     <div class="container">
-      
+      <form form="form" method="POST">
+	<fieldset>
+          <legend>Write a Post:</legend>
+	  <textarea Required="True" rows="5" type="text" class="form-control" name="post" value="post" placeholder="Write your post here..."></textarea><br><br>
+	  Make your post either public or private<br>
+	  <input type="radio" Required="True" name="type" value="public">Public
+	  <input type="radio" Required="True" name="type" value="private">Private
+	  <br>
+	  <button class="btn btn-lg btn-success btn-block" type="submit" name="b" value="submit">Post!</button>
+	</fieldset>
+      </form>
     </div>
   </body>
 </html>

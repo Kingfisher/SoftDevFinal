@@ -13,6 +13,7 @@ def checkPassword(passwordToCheck):
 def checkUsername(usernameToCheck):
     return ((len(usernameToCheck) > 0) and (users.find({"username":usernameToCheck}).count() == 0))
 
+#checks if email address has minimum length of six with @, ., and with at least one character for the email and three for the ending
 def checkEmail(email):
     if (len(email) > 6):
         if (email.find('@') == 1):
@@ -56,6 +57,10 @@ def removePost(id):
     else:
         posts.remove(posts.find_one({"id":id}))
         return True
+
+def removePosts():
+    db.posts.remove({})
+    posts = db.posts
         
 def addPublicPost(username, post):
     return addPost(username, post, "Public")

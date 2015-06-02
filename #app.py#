@@ -9,7 +9,7 @@ app = Flask(__name__)
 app.secret_key = os.urandom(24)
 
 @app.route('/', methods=["GET","POST"])
-
+x
 @app.route('/posts',methods=["GET","POST"])
 def posts():
     posts = database.getPublicPosts() + database.getPrivatePosts()
