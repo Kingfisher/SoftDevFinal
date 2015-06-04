@@ -17,13 +17,13 @@
 
       .navbar-default .navbar-nav > .active > a, .navbar-default .navbar-nav > .active >   
       a:hover, .navbar-default .navbar-nav > .active > a:focus {
-      color: white; /*BACKGROUND color for active*/
-      background-color: green;
+      color: #000066; /*BACKGROUND color for active*/
+      background-color: #CCE6FF /*lighter blue*/;
       }
 
       .navbar-default {
-      background-color: #99CCFF;
-      border-color: green;
+      background-color: #99CCFF /*light blue*/;
+      border-color: #CCE6FF /*lighter blue*/;
       }
 
       .dropdown-menu > li > a:hover,
@@ -73,11 +73,10 @@
 	    </li>
 	    <li>
 	      {% if username == 'a' %}
-	      <center>
 	      <form method="POST">
-		<button class="btn btn-lg btn-danger btn-block" type="submit" name="b" value="Delete">Remove all Posts</button>
+		<button class="btn btn-lg btn-danger" type="submit" name="b" value="deletePosts">Remove all Posts</button>
+		<button class="btn btn-lg btn-warning" type="submit" name="b" value="deleteUsers">Remove all Users</button>		
 	      </form>
-	      </center>
 	      {% else %}
 	      {% endif %}
 	    </li>
@@ -90,7 +89,7 @@
 	    <li class="active">
 	      <a href="{{ url_for('logout') }}">Log out</a>
 	    </li>
-	    <li><a href="">
+	    <li><a href="#">
 		<font color="green"> Logged in as {{ username[0] }} </font>
 	    </a></li>
 	    {% endif %}

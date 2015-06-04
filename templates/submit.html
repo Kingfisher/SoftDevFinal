@@ -16,13 +16,13 @@
 
       .navbar-default .navbar-nav > .active > a, .navbar-default .navbar-nav > .active >   
       a:hover, .navbar-default .navbar-nav > .active > a:focus {
-      color: white; /*BACKGROUND color for active*/
-      background-color: green;
+      color: #000066; /*BACKGROUND color for active*/
+      background-color: #CCE6FF /*lighter blue*/;
       }
 
       .navbar-default {
-      background-color: #99CCFF;
-      border-color: green;
+      background-color: #99CCFF /*light blue*/;
+      border-color: #CCE6FF /*lighter blue*/;
       }
 
       .dropdown-menu > li > a:hover,
@@ -60,26 +60,38 @@
 	</div>
         <div id="navbar" class="navbar-collapse collapse">
 	  <ul class="nav navbar-nav">
+	    <li class="active">
+	      <a href="{{ url_for('posts') }}">Return to Posts</a>
+	    </li>
 	  </ul>
           <ul class="nav navbar-nav navbar-right">
+	    <li class="active">
+	      <a href="{{ url_for('logout') }}">Log out</a>
+	    </li>
+	    <!-- Username Display -->
             <li><a href="#">
-		<font color="green"> Logged in as {{ username[0] }} 
+		<font color="green"> Logged in as {{ username[0] }}</font> 
 	    </a></li>
           </ul>
         </div>
       </div>
     </nav>
     <div class="container">
-      <form form="form" method="POST">
-	<fieldset>
-          <legend>Write a Post:</legend>
-	  <textarea Required="True" rows="5" type="text" class="form-control" name="post" value="post" placeholder="Write your post here..."></textarea><br><br>
-	  Make your post either public or private<br>
-	  <input type="radio" Required="True" name="type" value="public">Public
-	  <input type="radio" Required="True" name="type" value="private">Private
-	  <br>
-	  <button class="btn btn-lg btn-success btn-block" type="submit" name="b" value="submit">Post!</button>
-	</fieldset>
+      <font size="6">Write a Post:<hr></font>
+      <form role="form" method="POST">
+	<textarea Required="True" rows="5" type="text" class="form-control" name="post" value="post" placeholder="Write your post here..."></textarea><br><br>
+	Choose to have your post publicly available or seen only by site members<br>
+	<div class="radio">
+	  <label>
+	    <input type="radio" Required="True" name="privacy" value="public">Public
+	  </label>
+	</div>
+	<div class="radio">
+	  <label>
+	    <input type="radio" Required="True" name="privacy" value="private">Private
+	  </label>
+	</div>
+	<button class="btn btn-lg btn-success btn-block" type="submit" name="b" value="submit">Post!</button>
       </form>
     </div>
   </body>

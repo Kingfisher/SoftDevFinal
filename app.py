@@ -15,8 +15,11 @@ def posts():
     posts = database.getPublicPosts() + database.getPrivatePosts()
     if request.method == "POST":
         button = request.form["b"]
-        if button == "Delete":
+        if button == "deletePosts":
             database.removePosts()
+        if button == "deleteUsers":
+            database.removeUsers()
+            return redirect(url_for('logout'))
         return redirect(url_for('posts'))
     else:
         if 'username' in session:
@@ -60,14 +63,13 @@ def register():
         elif button == "Posts":
             return redirect(url_for('posts'))
         else:
-            button = request.form["b"]
             username = request.form["username"]
             password = request.form["password"]
             email = request.form["email"]
             #Register unsuccessful, return to signup
             if not database.addUser(username,password,email):
-                flash("Invalid username or password.")
-                return redirect(url_for('signup'))
+                flash("Invalid username, password, or email address.")
+                return redirect(url_for('register'))
             #Register successful, redirect to login
             flash("Great! You've registered! Now you can log in.")
             return redirect(url_for('login'))
@@ -90,7 +92,7 @@ def submit():
         username = session['username']
         if request.method == "POST":
             post = request.form["post"]
-            postType = request.form["type"]
+            postType = request.form["privacy"]
             database.addPost(username, post, postType)   
             return redirect(url_for('posts')) 
         return render_template("submit.html", username = username) 
