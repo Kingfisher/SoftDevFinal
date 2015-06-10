@@ -1,9 +1,13 @@
 import pymongo, hashlib
+from bson.json_util import dumps
+
 connection = pymongo.MongoClient()
 
 db = connection["database"]
 users = db.users
+
 posts = db.posts
+
 
 #return true if password's length is greater than 0
 def checkPassword(passwordToCheck):
@@ -35,7 +39,7 @@ def addUser(username, password, email):
         users.insert(newUser)
         return True
 
-#Checks whether user exists, then checks if passwords match
+#checks whether user exists, then checks if passwords match
 def validateUser(username, password):
     record = users.find({"username":username})
     if (record.count() != 1):
@@ -43,16 +47,17 @@ def validateUser(username, password):
     else:
         return record[0]['password'] == hashlib.sha512(password).hexdigest()
 
-#Adds a post
+#adds a post
 def addPost(username, post, privacy):
     if ((checkPost(post) == False) or (users.find({"username":username}).count() < 1)):
         return False
     else:
-        newPost = {"username": username,"post": post, "privacy" : privacy}
+        newPost = {"username": username,"post": post, "privacy" : privacy}  
         posts.insert(newPost)
         return True
+    
 
-#Removes a post by id
+#removes a post by id
 def removePost(id):
     if(posts.find({"id":id}).count() < 1):
         return False
@@ -60,27 +65,31 @@ def removePost(id):
         posts.remove(posts.find_one({"id":id}))
         return True
 
-#Remove all posts
+#remove all posts
 def removePosts():
     db.posts.remove({})
     posts = db.posts
 
-#Removes all users
+#removes all users
 def removeUsers():
     db.users.remove({})
     users = db.users
+    addUser("a","9138","a@a.org")
         
-#Adds a publicly available post
+#adds a publicly available post
 def addPublicPost(username, post):
-    return addPost(username, post, "Public")
+    return addPost(username, post, "public")
 
-#Adds a members only post
+#adds a members only post
 def addPrivatePost(username, post):
-    return addPost(username, post, "Private")
+    return addPost(username, post, "private")
 
-#Returns a list of lists, each of a post with one type of privacy, with the username, post, and privacy contained 
+#returns a list of lists, each of a post with one type of privacy, with the username, post, and privacy contained 
 def getPosts(privacy):
-    result = posts.find({'privacy': privacy})
+   
+    print "Test", dumps(posts.find({}))
+    print "database: ", posts.find({'privacy': privacy})
+    result = posts.find({"privacy": privacy})
     postList = []
     for post in result:
         miniPostList = []
@@ -89,14 +98,19 @@ def getPosts(privacy):
         miniPostList.append(post['privacy'])
         postList.append(miniPostList)
     return postList
-        
-#Gets a list of public posts
-def getPublicPosts():
-    return getPosts("Public")
 
-#Gets a list of private posts
+#shows everything
+def allShown():
+    
+    return True
+      
+#gets a list of public posts
+def getPublicPosts():
+    return getPosts("public")
+
+#gets a list of private posts
 def getPrivatePosts():
-    return getPosts("Private")
+    return getPosts("private")
 
 
 
