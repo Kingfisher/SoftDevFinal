@@ -123,8 +123,13 @@
 	  <tbody>
 	    {% for post in posts %}
 	    <tr>
-	      <td>{{post[0]}}</td>
-	      <td>({{post[2]}}) {{post[1]}}</td>
+	      <td>
+	      {{post[1]}}
+	      <br>
+	      <font size=1>
+		posted by {{post[0]}}
+	      </font>
+	      </td>
 	    </tr>
 	    {% endfor %}
 	  </tbody>

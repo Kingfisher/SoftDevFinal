@@ -5,7 +5,6 @@ connection = pymongo.MongoClient()
 
 db = connection["database"]
 users = db.users
-
 posts = db.posts
 
 
@@ -47,12 +46,26 @@ def validateUser(username, password):
     else:
         return record[0]['password'] == hashlib.sha512(password).hexdigest()
 
+#finds a post
+def findPost(id):
+    record = users.find({"id":id})
+    return record[0]
+
+#checks if posts are empty, and if not, returns the last id used plus one
+def checkPosts():
+    if(posts.count() == 0):
+        return True
+    else:
+        print list(posts.find())[-1]
+        print "ADSFADSFAD"
+        return list(posts.find())[-1]["post"]
+
 #adds a post
-def addPost(username, post, privacy):
+def addPost(username, post, privacy, postId):
     if ((checkPost(post) == False) or (users.find({"username":username}).count() < 1)):
         return False
     else:
-        newPost = {"username": username,"post": post, "privacy" : privacy}  
+        newPost = {"username": username,"post": post, "privacy" : privacy, "postId": postId, "comments":{}}  
         posts.insert(newPost)
         return True
     
@@ -86,9 +99,8 @@ def addPrivatePost(username, post):
 
 #returns a list of lists, each of a post with one type of privacy, with the username, post, and privacy contained 
 def getPosts(privacy):
-   
-    print "Test", dumps(posts.find({}))
-    print "database: ", posts.find({'privacy': privacy})
+    ###print "Test", dumps(posts.find({}))
+    ###print "database: ", posts.find({'privacy': privacy})
     result = posts.find({"privacy": privacy})
     postList = []
     for post in result:
@@ -99,11 +111,6 @@ def getPosts(privacy):
         postList.append(miniPostList)
     return postList
 
-#shows everything
-def allShown():
-    
-    return True
-      
 #gets a list of public posts
 def getPublicPosts():
     return getPosts("public")

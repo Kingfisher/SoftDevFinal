@@ -58,7 +58,9 @@ app = Flask(__name__)
 app.session_interface = MongoSessionInterface(db='pjuu')
 app.secret_key = os.urandom(24)
 
-@app.route('/', methods=["GET","POST"])
+@app.route('/',methods=["GET","POST"])
+def default():
+    return redirect(url_for('posts'))
 
 @app.route('/posts',methods=["GET","POST"])
 def posts():
@@ -78,7 +80,40 @@ def posts():
             username = session['username']
         else:
             username = False
-        return render_template("posts.html", posts = posts, username = username)       
+        return render_template("posts.html", posts = posts, username = username)     
+
+'''@app.route('/posts/<id>',methods=["GET","POST"])
+def posts(id):
+    post = database.findPost(id)
+    username = post[0]
+    postContent = post[1]
+    privacy = post[2]
+    if 'username' not in session:
+        if privacy=="private":
+            flash("You must be logged in to view this")
+            session['goTo'] = str(id)
+            return redirect(url_for('login'))
+    return render_template("post.html", username=username, postContent=postContent, privacy=privacy)'''
+
+@app.route('/posts/submit',methods=["GET","POST"])
+def submit():
+    if 'username' in session:
+        username = session['username']
+        if request.method == "POST":
+            post = request.form["post"]
+            postType = request.form["privacy"]
+            if(database.checkPosts()):
+                postId = 1
+            else:
+                postId = checkPosts()
+            database.addPost(username, post, postType, postId = postId) 
+            return redirect(url_for('posts')) 
+        return render_template("submit.html", username = username) 
+    else:
+        flash("You are not logged in")
+        session['goTo'] = 'submit'
+        return redirect(url_for('login'))
+
 
 @app.route('/login', methods=["GET","POST"])
 def login():
@@ -97,7 +132,6 @@ def login():
                 return redirect(url_for('login'))
             #Login successful, redirect to main page
             session['username'] = request.form['username']
-            database.allShown()
             if 'goTo' in session:
                 goTo = session['goTo']
                 session.pop('goTo')
@@ -137,21 +171,6 @@ def user(username):
         return render_template("user.html", username = username)
     else:
         return render_template("user.html", username = username)
-
-@app.route('/posts/submit',methods=["GET","POST"])
-def submit():
-    if 'username' in session:
-        username = session['username']
-        if request.method == "POST":
-            post = request.form["post"]
-            postType = request.form["privacy"]
-            database.addPost(username, post, postType)   
-            return redirect(url_for('posts')) 
-        return render_template("submit.html", username = username) 
-    else:
-        flash("You are not logged in")
-        session['goTo'] = 'submit'
-        return redirect(url_for('login'))
 
 @app.route('/logout')
 def logout():
