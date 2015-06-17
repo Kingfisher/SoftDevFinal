@@ -7,50 +7,11 @@
     <link rel="stylesheet" href="../static/css/bootstrap.min.css">
 
     <!-- To push the page content below the navbar -->
-    <style>
-      body{ padding-top: 65px; }
-      {% if username != False %}
-
-      .navbar-default .navbar-nav > li > a:hover, .navbar-default .navbar-nav > li > a:focus {
-      color: #000;  /*Sets the text hover color on navbar*/
-      }
-
-      .navbar-default .navbar-nav > .active > a, .navbar-default .navbar-nav > .active >   
-      a:hover, .navbar-default .navbar-nav > .active > a:focus {
-      color: #000066; /*BACKGROUND color for active*/
-      background-color: #CCE6FF /*lighter blue*/;
-      }
-
-      .navbar-default {
-      background-color: #99CCFF /*light blue*/;
-      border-color: #CCE6FF /*lighter blue*/;
-      }
-
-      .dropdown-menu > li > a:hover,
-      .dropdown-menu > li > a:focus {
-      color: #262626;
-      text-decoration: none;
-      background-color: #66CCFF;  /*change color of links in drop down here*/
-      }
-
-      .nav > li > a:hover,
-      .nav > li > a:focus {
-      text-decoration: none;
-      background-color: silver; /*Change rollover cell color here*/
-      }
-
-
-      .navbar-default .navbar-nav > li > a {
-      color: white; /*Change active text color here*/
-      }
-      {% endif %}
-      .myclass {
-      position: absolute;
-      left: 30%;
-      top: 50%;
-      }
-      }
-    </style>
+    {% if username != False %}
+    <link rel="stylesheet" href="../static/css/custom.css"></link>
+    {% else %}
+    <link rel="stylesheet" href="../static/css/barebones.css"></link>
+    {% endif %}
   </head>
   <body>
     <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -77,7 +38,7 @@
 		<!-- Removes all posts -->
 		<button class="btn btn-sm btn-danger" type="submit" name="b" value="deletePosts">Remove all Posts</button>
 		<!-- Removes all users besides a the admin -->
-		<button class="btn btn-sm btn-warning" type="submit" name="b" value="deleteUsers">Remove all Users</button>		
+		<button class="btn btn-sm btn-warning" type="submit" name="b" value="deleteUsers">Remove other Users</button>		
 	      </form>
 	      {% else %}
 	      {% endif %}
@@ -85,14 +46,18 @@
 	  </ul>
           <ul class="nav navbar-nav navbar-right">
             {% if not username %}
-	    <li class="active"><a href="{{ url_for('login') }}">Log in</a></li>
+	    <li class="active">
+	      <a href="{{ url_for('login') }}">Log in</a>
+	    </li>
 	    <li> <a href=""> You are Anonymous </a></li>
 	    {% else %}
 	    <li class="active">
 	      <a href="{{ url_for('logout') }}">Log out</a>
 	    </li>
 	    <li><a href="#">
+		<b>
 		<font color="green"> Logged in as {{ username[0] }} </font>
+		</b>
 	    </a></li>
 	    {% endif %}
           </ul>
@@ -124,11 +89,26 @@
 	    {% for post in posts %}
 	    <tr>
 	      <td>
-	      {{post[1]}}
-	      <br>
-	      <font size=1>
-		posted by {{post[0]}}
-	      </font>
+		<u>
+		  <!-- Post title -->
+		  {{post[1]}}
+		</u>
+		<br>
+		<font size=2>
+		  <!-- Post -->
+		  {{post[2][:100] if post[2]|count > 100 else post[2]}}
+		</font>
+		<br>
+		<font size=1>
+		  posted by 
+		  <a href="#"> 
+		    <!-- Username-->
+		    {{post[0]}}
+		  </a> 
+		  at
+		  <!-- Timestamp -->
+		  {{post[-1]}}
+		</font>
 	      </td>
 	    </tr>
 	    {% endfor %}

@@ -61,11 +61,11 @@ def checkPosts():
         return list(posts.find())[-1]["post"]
 
 #adds a post
-def addPost(username, post, privacy, postId):
+def addPost(username, title, post, privacy, postId, timeStamp):
     if ((checkPost(post) == False) or (users.find({"username":username}).count() < 1)):
         return False
     else:
-        newPost = {"username": username,"post": post, "privacy" : privacy, "postId": postId, "comments":{}}  
+        newPost = {"username": username, "title" : title, "post": post, "privacy" : privacy, "postId" : postId, "timeStamp" : timeStamp, "comments" : {}}  
         posts.insert(newPost)
         return True
     
@@ -106,8 +106,10 @@ def getPosts(privacy):
     for post in result:
         miniPostList = []
         miniPostList.append(post['username'])
+        miniPostList.append(post['title'])
         miniPostList.append(post['post'])
         miniPostList.append(post['privacy'])
+        miniPostList.append(post['timeStamp'])
         postList.append(miniPostList)
     return postList
 

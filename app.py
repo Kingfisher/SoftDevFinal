@@ -4,6 +4,7 @@ import random
 import database
 import os
 import pymongo
+import time
 
 from uuid import uuid4
 from datetime import datetime, timedelta
@@ -68,7 +69,6 @@ def posts():
     if request.method == "POST":
         button = request.form["b"]
         if button == "deletePosts":
-            print "Cats dance."
             database.removePosts()
             flash("You've successfully removed all posts.")
         if button == "deleteUsers":
@@ -100,13 +100,15 @@ def submit():
     if 'username' in session:
         username = session['username']
         if request.method == "POST":
+            title = request.form["title"]
             post = request.form["post"]
             postType = request.form["privacy"]
+            timeStamp = datetime.now() + timedelta(days=10)
             if(database.checkPosts()):
                 postId = 1
             else:
                 postId = checkPosts()
-            database.addPost(username, post, postType, postId = postId) 
+            database.addPost(username, title, post, postType, postId, timeStamp) 
             return redirect(url_for('posts')) 
         return render_template("submit.html", username = username) 
     else:

@@ -7,42 +7,7 @@
     <link rel="stylesheet" href="../static/css/bootstrap.min.css">
 
     <!-- To push the page content below the navbar -->
-    <style>
-      body{ padding-top: 65px; }
-
-      .navbar-default .navbar-nav > li > a:hover, .navbar-default .navbar-nav > li > a:focus {
-      color: #000;  /*Sets the text hover color on navbar*/
-      }
-
-      .navbar-default .navbar-nav > .active > a, .navbar-default .navbar-nav > .active >   
-      a:hover, .navbar-default .navbar-nav > .active > a:focus {
-      color: #000066; /*BACKGROUND color for active*/
-      background-color: #CCE6FF /*lighter blue*/;
-      }
-
-      .navbar-default {
-      background-color: #99CCFF /*light blue*/;
-      border-color: #CCE6FF /*lighter blue*/;
-      }
-
-      .dropdown-menu > li > a:hover,
-      .dropdown-menu > li > a:focus {
-      color: #262626;
-      text-decoration: none;
-      background-color: #66CCFF;  /*change color of links in drop down here*/
-      }
-
-      .nav > li > a:hover,
-      .nav > li > a:focus {
-      text-decoration: none;
-      background-color: silver; /*Change rollover cell color here*/
-      }
-
-
-      .navbar-default .navbar-nav > li > a {
-      color: white; /*Change active text color here*/
-      }
-    </style>
+    <link rel="stylesheet" href="../static/css/custom.css"></link>
 
   </head>
   <body>
@@ -79,18 +44,33 @@
     <div class="container">
       <font size="6">Write a Post:<hr></font>
       <form role="form" method="POST">
-	<textarea Required="True" rows="5" type="text" class="form-control" name="post" value="post" placeholder="Write your post here..."></textarea><br><br>
-	Choose to have your post publicly available or seen only by site members<br>
+	<div class="form-group">
+	  <label for="comment">Title:</label>
+	  <textarea Required="True" rows="1" type="text" class="form-control" name="title" value="title" placeholder="Write your title here...">
+	  </textarea>
+	</div>
+	<div class="form-group">
+	  <br>
+	  <label for="comment">Submission:</label>
+	  <textarea Required="True" rows="5" type="text" class="form-control" name="post" value="post" placeholder="Write your post here...">
+	  </textarea>
+	</div>
+	<br>
+	<br>
+	Choose to have your post publicly available or seen only by site members.<br>
+	<!-- Public radio button -->
 	<div class="radio">
 	  <label>
 	    <input type="radio" Required="True" name="privacy" value="public" checked="checked">Public
 	  </label>
 	</div>
+	<!-- Private radio button -->
 	<div class="radio">
 	  <label>
 	    <input type="radio" Required="True" name="privacy" value="private">Private
 	  </label>
 	</div>
+	<!-- Sumbit the post -->
 	<button class="btn btn-lg btn-success btn-block" type="submit" name="b" value="submit">Post!</button>
       </form>
     </div>
